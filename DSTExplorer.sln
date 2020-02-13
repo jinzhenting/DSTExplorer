@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DST", "DST\DST.csproj", "{306A6066-C6EA-43FF-8566-1DAC42DFD6F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSTExplorer", "DSTExplorer\DSTExplorer.csproj", "{306A6066-C6EA-43FF-8566-1DAC42DFD6F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
