@@ -31,12 +31,13 @@ namespace DSTExplorer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Index));
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.infoLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.picPanel = new System.Windows.Forms.Panel();
             this.toolsPanel = new System.Windows.Forms.Panel();
+            this.export_button = new System.Windows.Forms.Button();
             this.one_button = new System.Windows.Forms.Button();
             this.open_button = new System.Windows.Forms.Button();
             this.settings_button = new System.Windows.Forms.Button();
@@ -45,25 +46,25 @@ namespace DSTExplorer
             this.next_button = new System.Windows.Forms.Button();
             this.zooz_dw_button = new System.Windows.Forms.Button();
             this.previous_button = new System.Windows.Forms.Button();
-            this.pictureBoxTip = new System.Windows.Forms.ToolTip(this.components);
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.statusStrip1.SuspendLayout();
+            this.drawTimer = new System.Windows.Forms.Timer(this.components);
+            this.backDraw = new System.ComponentModel.BackgroundWorker();
+            this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.picPanel.SuspendLayout();
             this.toolsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            this.statusStrip1.Font = new System.Drawing.Font("Microsoft YaHei UI", 8F);
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusStrip.Font = new System.Drawing.Font("Microsoft YaHei UI", 8F);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1,
             this.infoLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 584);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(790, 29);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip.Location = new System.Drawing.Point(0, 584);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(790, 29);
+            this.statusStrip.TabIndex = 3;
+            this.statusStrip.Text = "statusStrip";
             // 
             // toolStripProgressBar1
             // 
@@ -80,13 +81,12 @@ namespace DSTExplorer
             // pictureBox
             // 
             this.pictureBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox.Location = new System.Drawing.Point(24, 23);
+            this.pictureBox.Location = new System.Drawing.Point(23, 18);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox.TabIndex = 4;
             this.pictureBox.TabStop = false;
-            this.pictureBoxTip.SetToolTip(this.pictureBox, "鼠标左键移动，滚动缩放。");
             this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDown);
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
             this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseUp);
@@ -97,9 +97,9 @@ namespace DSTExplorer
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picPanel.Controls.Add(this.pictureBox);
-            this.picPanel.Location = new System.Drawing.Point(0, 38);
+            this.picPanel.Location = new System.Drawing.Point(1, 41);
             this.picPanel.Name = "picPanel";
-            this.picPanel.Size = new System.Drawing.Size(790, 552);
+            this.picPanel.Size = new System.Drawing.Size(788, 542);
             this.picPanel.TabIndex = 7;
             // 
             // toolsPanel
@@ -107,6 +107,7 @@ namespace DSTExplorer
             this.toolsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.toolsPanel.BackColor = System.Drawing.SystemColors.Menu;
+            this.toolsPanel.Controls.Add(this.export_button);
             this.toolsPanel.Controls.Add(this.one_button);
             this.toolsPanel.Controls.Add(this.open_button);
             this.toolsPanel.Controls.Add(this.settings_button);
@@ -119,6 +120,20 @@ namespace DSTExplorer
             this.toolsPanel.Name = "toolsPanel";
             this.toolsPanel.Size = new System.Drawing.Size(790, 40);
             this.toolsPanel.TabIndex = 10;
+            // 
+            // export_button
+            // 
+            this.export_button.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.export_button.FlatAppearance.BorderSize = 0;
+            this.export_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.export_button.Location = new System.Drawing.Point(653, 6);
+            this.export_button.Name = "export_button";
+            this.export_button.Size = new System.Drawing.Size(65, 30);
+            this.export_button.TabIndex = 13;
+            this.export_button.Text = "导出";
+            this.export_button.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.export_button.UseVisualStyleBackColor = false;
+            this.export_button.Click += new System.EventHandler(this.export_button_Click);
             // 
             // one_button
             // 
@@ -150,10 +165,10 @@ namespace DSTExplorer
             // 
             // settings_button
             // 
-            this.settings_button.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.settings_button.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.settings_button.FlatAppearance.BorderSize = 0;
             this.settings_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settings_button.Location = new System.Drawing.Point(542, 6);
+            this.settings_button.Location = new System.Drawing.Point(722, 6);
             this.settings_button.Name = "settings_button";
             this.settings_button.Size = new System.Drawing.Size(65, 30);
             this.settings_button.TabIndex = 11;
@@ -232,9 +247,14 @@ namespace DSTExplorer
             this.previous_button.UseVisualStyleBackColor = false;
             this.previous_button.Click += new System.EventHandler(this.previous_button_Click);
             // 
-            // timer
+            // drawTimer
             // 
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            this.drawTimer.Interval = 10;
+            this.drawTimer.Tick += new System.EventHandler(this.timerDraw_Tick);
+            // 
+            // backDraw
+            // 
+            this.backDraw.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backDraw_DoWork);
             // 
             // Index
             // 
@@ -243,7 +263,7 @@ namespace DSTExplorer
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(790, 613);
             this.Controls.Add(this.toolsPanel);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.picPanel);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -252,11 +272,14 @@ namespace DSTExplorer
             this.Name = "Index";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "刺锈文件查看器";
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.ResizeBegin += new System.EventHandler(this.Index_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.Index_ResizeEnd);
+            this.SizeChanged += new System.EventHandler(this.Index_SizeChanged);
+            this.Resize += new System.EventHandler(this.Index_Resize);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.picPanel.ResumeLayout(false);
-            this.picPanel.PerformLayout();
             this.toolsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -264,7 +287,7 @@ namespace DSTExplorer
         }
 
         #endregion
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private System.Windows.Forms.ToolStripStatusLabel infoLabel;
         private System.Windows.Forms.PictureBox pictureBox;
@@ -278,8 +301,12 @@ namespace DSTExplorer
         private System.Windows.Forms.Button previous_button;
         private System.Windows.Forms.Button zooz_dw_button;
         private System.Windows.Forms.Button one_button;
-        private System.Windows.Forms.ToolTip pictureBoxTip;
-        private System.Windows.Forms.Timer timer;
+        /// <summary>
+        /// 绘图延时
+        /// </summary>
+        private System.Windows.Forms.Timer drawTimer;
+        private System.ComponentModel.BackgroundWorker backDraw;
+        private System.Windows.Forms.Button export_button;
     }
 }
 
