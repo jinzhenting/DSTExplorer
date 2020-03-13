@@ -23,6 +23,6 @@ namespace DSTExplorer
             return (width / pixels) * 1.34f;
         }
         [DllImport("gdi32.dll")]// GDI_API
-        private static extern int GetDeviceCaps(IntPtr hdc, int Index);
+        private static extern int GetDeviceCaps(IntPtr hdc, int Home);
     }
 }

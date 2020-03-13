@@ -5,14 +5,14 @@
         /// <summary>
         /// EMF转PLT
         /// </summary>
-        /// <param name="emf_path">EMF位置</param>
-        /// <param name="plt_path">PLT位置</param>
-        public static void Emf2Plt(string emf_path, string plt_path)
+        /// <param name="emfPath">EMF位置</param>
+        /// <param name="pltPath">PLT位置</param>
+        public static void Emf2Plt(string emfPath, string pltPath)
         {
             Corel.Interop.CorelDRAW.Application coreldraw = new Corel.Interop.CorelDRAW.Application();
-            coreldraw.OpenDocument(emf_path,1);
+            coreldraw.OpenDocument(emfPath,1);
             coreldraw.ActiveDocument.ExportBitmap(
-                plt_path,
+                pltPath,
                 Corel.Interop.VGCore.cdrFilter.cdrPLT,
                 Corel.Interop.VGCore.cdrExportRange.cdrCurrentPage,
                 Corel.Interop.VGCore.cdrImageType.cdrRGBColorImage,

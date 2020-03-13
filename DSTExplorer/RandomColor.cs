@@ -5,6 +5,11 @@ namespace DSTExplorer
 {
     public static class RandomColor
     {
+        /// <summary>
+        /// 颜色列表生成器
+        /// </summary>
+        /// <param name="count">颜色数</param>
+        /// <returns>颜色列表</returns>
         public static List<Color> Get(int count)
         {
             List<Color> colors = new List<Color>();

@@ -24,7 +24,7 @@ using System.Drawing.Imaging;
 
 namespace DSTExplorer
 {
-    public partial class Index : Form
+    public partial class Home : Form
     {
         #region 初始化
 
@@ -48,7 +48,7 @@ namespace DSTExplorer
         /// </summary>
         private int titleSize;
 
-        public Index()
+        public Home()
         {
             InitializeComponent();
             ///
@@ -63,15 +63,15 @@ namespace DSTExplorer
             frameSize = (this.Size.Width - this.ClientSize.Width) / 2;// 窗口边框宽
             titleSize = this.Size.Height - this.ClientSize.Height - frameSize;// 窗口标题栏宽
             ///
-            open_button.Image = Image.FromFile(@"Icons\folder-fill.png");
-            adaptive_form_button.Image = Image.FromFile(@"Icons\compress-alt-fill.png");
-            zooz_up_button.Image = Image.FromFile(@"Icons\plus-circle-fill.png");
-            zooz_dw_button.Image = Image.FromFile(@"Icons\minus-circle-fill.png");
-            previous_button.Image = Image.FromFile(@"Icons\caret-left.png");
-            next_button.Image = Image.FromFile(@"Icons\caret-right.png");
-            settings_button.Image = Image.FromFile(@"Icons\cog-fill.png");
-            one_button.Image = Image.FromFile(@"Icons\1-1.png");
-            export_button.Image = Image.FromFile(@"Icons\share.png");
+            openButton.Image = Image.FromFile(@"Icons\folder-fill.png");
+            adaptiveFormButton.Image = Image.FromFile(@"Icons\compress-alt-fill.png");
+            zoozUpButton.Image = Image.FromFile(@"Icons\plus-circle-fill.png");
+            zoozDownButton.Image = Image.FromFile(@"Icons\minus-circle-fill.png");
+            previousButton.Image = Image.FromFile(@"Icons\caret-left.png");
+            nextButton.Image = Image.FromFile(@"Icons\caret-right.png");
+            settingsButton.Image = Image.FromFile(@"Icons\cog-fill.png");
+            oneButton.Image = Image.FromFile(@"Icons\1-1.png");
+            exportButton.Image = Image.FromFile(@"Icons\share.png");
             //picPanel.BackgroundImage = Image.FromFile(@"image/01.jpg");// 载入背景
             //picPanel.BackColor = Color.Red;
             pictureBox.BackColor = Color.Transparent;
@@ -210,13 +210,13 @@ namespace DSTExplorer
         private void timerDraw_Tick(object sender, EventArgs e)
         {
             drawTimer.Stop();
-            if (backDraw.IsBusy) return;
-            backDraw.RunWorkerAsync();
+            if (drawBack.IsBusy) return;
+            drawBack.RunWorkerAsync();
         }
         /// <summary>
         /// 绘图
         /// </summary>
-        private void backDraw_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void drawBack_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             if (drawTimer.Enabled) return;// 检测延时有否重置
             bmp = new Bitmap(newSize.Width, newSize.Height);// 创建图像
@@ -251,7 +251,7 @@ namespace DSTExplorer
         /// <summary>
         /// 打开
         /// </summary>
-        private void open_button_Click(object sender, EventArgs e)
+        private void openButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openfiledialog = new OpenFileDialog();
             openfiledialog.Filter = "刺绣文件(*.dst)|*.dst";// 文件类型
@@ -264,20 +264,20 @@ namespace DSTExplorer
             files = directorys.GetFiles(@"*.dst", SearchOption.TopDirectoryOnly);// 扫描
             if (files.Length > 1)
             {
-                previous_button.Enabled = true;
-                next_button.Enabled = true;
+                previousButton.Enabled = true;
+                nextButton.Enabled = true;
             }
             else
             {
-                previous_button.Enabled = false;
-                next_button.Enabled = false;
+                previousButton.Enabled = false;
+                nextButton.Enabled = false;
             }
         }
 
         /// <summary>
         /// 适应窗口
         /// </summary>
-        private void adaptive_form_button_Click(object sender, EventArgs e)
+        private void adaptiveFormButton_Click(object sender, EventArgs e)
         {
             if (dst != null) Zooz(picPanel.Size, "pic_center");
             else MessageBox.Show("未选择刺绣文件");
@@ -286,7 +286,7 @@ namespace DSTExplorer
         /// <summary>
         /// 放大
         /// </summary>
-        private void zooz_up_button_Click(object sender, EventArgs e)
+        private void zoozUpButton_Click(object sender, EventArgs e)
         {
             if (dst != null) Zooz(new Size((int)(pictureBox.Width * 1.2), (int)(pictureBox.Height * 1.2)), "windows_center");
             else MessageBox.Show("未选择刺绣文件");
@@ -295,7 +295,7 @@ namespace DSTExplorer
         /// <summary>
         /// 缩小
         /// </summary>
-        private void zooz_dw_button_Click(object sender, EventArgs e)
+        private void zoozDownButton_Click(object sender, EventArgs e)
         {
             if (dst != null) Zooz(new Size((int)(pictureBox.Width * 0.8), (int)(pictureBox.Height * 0.8)), "windows_center");
             else MessageBox.Show("未选择刺绣文件");
@@ -304,7 +304,7 @@ namespace DSTExplorer
         /// <summary>
         /// 实物大小
         /// </summary>
-        private void one_button_Click(object sender, EventArgs e)
+        private void oneButton_Click(object sender, EventArgs e)
         {
             if (dst != null) Zooz(dst.OneSize, "pic_center");
             else MessageBox.Show("未选择刺绣文件");
@@ -313,22 +313,22 @@ namespace DSTExplorer
         /// <summary>
         /// 上一个
         /// </summary>
-        private void previous_button_Click(object sender, EventArgs e) { MessageBox.Show("功能未完成"); }
+        private void previousButton_Click(object sender, EventArgs e) { MessageBox.Show("功能未完成"); }
 
         /// <summary>
         /// 下一个
         /// </summary>
-        private void next_button_Click(object sender, EventArgs e) { MessageBox.Show("功能未完成"); }
+        private void nextButton_Click(object sender, EventArgs e) { MessageBox.Show("功能未完成"); }
 
         /// <summary>
         /// 设置
         /// </summary>
-        private void settings_button_Click(object sender, EventArgs e) { MessageBox.Show("功能未完成"); }
+        private void settingsButton_Click(object sender, EventArgs e) { MessageBox.Show("功能未完成"); }
 
         /// <summary>
         /// 导出
         /// </summary>
-        private void export_button_Click(object sender, EventArgs e)
+        private void exportButton_Click(object sender, EventArgs e)
         {
             if (dst != null) Export();
             else MessageBox.Show("未选择刺绣文件");
@@ -386,25 +386,25 @@ namespace DSTExplorer
         //float windowsZoozX;
         //float windowsZoozY;
         //float windowsZoozZ;
-        private void Index_Resize(object sender, EventArgs e)
+        private void Home_Resize(object sender, EventArgs e)
         {
 
         }
-        private void Index_SizeChanged(object sender, EventArgs e)
+        private void Home_SizeChanged(object sender, EventArgs e)
         {
 
         }
         /// <summary>
         /// 窗口调整前
         /// </summary>
-        private void Index_ResizeBegin(object sender, EventArgs e)
+        private void Home_ResizeBegin(object sender, EventArgs e)
         {
             //windowsOld = Size;
         }
         /// <summary>
         /// 窗口调整后
         /// </summary>
-        private void Index_ResizeEnd(object sender, EventArgs e)
+        private void Home_ResizeEnd(object sender, EventArgs e)
         {
             //windowsAdd = new Size(Width - windowsOld.Width, Height - windowsOld.Height);// 增加或减少的大小
             //windowsZoozX = (float)Width / (float)windowsOld.Width;// 宽增加或减少的百分比

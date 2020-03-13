@@ -18,11 +18,11 @@ namespace DSTExplorer
         {
             string emf = Path.Combine(Environment.GetEnvironmentVariable("TEMP"), dst.FileName + ".emf");
             Bitmap bmp = new Bitmap(dst.OneSize.Width, dst.OneSize.Height);// 创建图像
-            Graphics g_bmp = Graphics.FromImage(bmp);
-            g_bmp.SmoothingMode = SmoothingMode.AntiAlias;// 绘图质量
-            Metafile metafile = new Metafile(emf, g_bmp.GetHdc());
-            Graphics g_mef = Graphics.FromImage(metafile);
-            Point startLocation, endLocation;// 起点终点坐标
+            Graphics graphicsBmp = Graphics.FromImage(bmp);
+            graphicsBmp.SmoothingMode = SmoothingMode.AntiAlias;// 绘图质量
+            Metafile metafile = new Metafile(emf, graphicsBmp.GetHdc());
+            Graphics raphicsMef = Graphics.FromImage(metafile);
+            Point start, end;// 起点终点坐标
             Pen pen = new Pen(dst.ColouPlate[0], 1);// 画笔
             int corCount = 1; ;// 换色次数
             float pixels = Pixels.Get();
@@ -34,14 +34,14 @@ namespace DSTExplorer
                     corCount++;
                 }
                 if (dst.StitchJump[i]) if (displayJump) continue;// 跳针
-                startLocation = dst.Locations[i];
-                endLocation = dst.Locations[i + 1];
-                g_mef.DrawLine(pen, (int)((startLocation.X - dst.MinX) * pixels), (int)((startLocation.Y - dst.MinY) * pixels), (int)((endLocation.X - dst.MinX) * pixels), (int)((endLocation.Y - dst.MinY)) * pixels);
+                start = dst.Locations[i];
+                end = dst.Locations[i + 1];
+                raphicsMef.DrawLine(pen, (int)((start.X - dst.MinX) * pixels), (int)((start.Y - dst.MinY) * pixels), (int)((end.X - dst.MinX) * pixels), (int)((end.Y - dst.MinY)) * pixels);
             }
-            g_mef.Save();
-            g_mef.Dispose();
+            raphicsMef.Save();
+            raphicsMef.Dispose();
             metafile.Dispose();
-            g_bmp.Dispose();
+            graphicsBmp.Dispose();
             return emf;
         }
     }

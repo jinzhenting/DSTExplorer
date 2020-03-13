@@ -13,23 +13,23 @@ namespace DSTExplorer
         /// <summary>
         /// 打开文件
         /// </summary>
-        /// <param name="inpath">文件路径</param>
-        public static DstFile LoadFile(string inpath)
+        /// <param name="inPath">文件路径</param>
+        public static DstFile LoadFile(string inPath)
         {
-            FileStream filestream = File.OpenRead(inpath);// 读取文件到Byte
+            FileStream fileStream = File.OpenRead(inPath);// 读取文件到Byte
             byte[] header = new byte[123];
-            filestream.Read(header, 0, header.Length);// 提取有信息的文件头
-            byte[] tempbyte = new byte[389];
-            filestream.Read(tempbyte, 0, tempbyte.Length);// 清除没意义的文件头
-            byte[] stitch = new byte[filestream.Length - header.Length - tempbyte.Length - 3 - (filestream.Length - 512) % 3];// 总长 - 512 - 3 - 总长除3余数
-            filestream.Read(stitch, 0, stitch.Length);// 提取针迹
-            byte[] end = new byte[filestream.Length - header.Length - stitch.Length];
-            filestream.Read(end, 0, end.Length);// 提取结束符
-            filestream.Close();
+            fileStream.Read(header, 0, header.Length);// 提取有信息的文件头
+            byte[] tempByte = new byte[389];
+            fileStream.Read(tempByte, 0, tempByte.Length);// 清除没意义的文件头
+            byte[] stitch = new byte[fileStream.Length - header.Length - tempByte.Length - 3 - (fileStream.Length - 512) % 3];// 总长 - 512 - 3 - 总长除3余数
+            fileStream.Read(stitch, 0, stitch.Length);// 提取针迹
+            byte[] end = new byte[fileStream.Length - header.Length - stitch.Length];
+            fileStream.Read(end, 0, end.Length);// 提取结束符
+            fileStream.Close();
             ///
             DstFile dst = new DstFile();
-            dst.FilePath = inpath;
-            dst.FileName = Path.GetFileNameWithoutExtension(inpath);
+            dst.FilePath = inPath;
+            dst.FileName = Path.GetFileNameWithoutExtension(inPath);
             ///
             try
             {
